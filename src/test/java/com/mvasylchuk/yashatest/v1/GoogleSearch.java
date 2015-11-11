@@ -4,6 +4,7 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.WebDriverRunner;
 import org.junit.Test;
 
+import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
@@ -35,7 +36,7 @@ public class GoogleSearch {
         assertFirstResultLinkText("Selenium - Web Browser Automation");
         clickOnLinkFromResultsListByNumber(1);
 
-        sleep(3000);
+        assertTextOnPage("Browser Automation");
         assertPageTitle("Selenium - Web Browser Automation");
 
     }
@@ -52,6 +53,9 @@ public class GoogleSearch {
         searchResultsList.get(number-1).find("a").click();
     }
 
+    public void assertTextOnPage(String text){
+        $(".homepage").shouldHave(text(text));
+    }
     public void assertPageTitle(String title){
         assertEquals(title, getWebDriver().getTitle());
     }
