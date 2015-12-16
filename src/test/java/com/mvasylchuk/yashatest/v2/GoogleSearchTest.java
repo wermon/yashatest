@@ -1,12 +1,9 @@
-package com.mvasylchuk.yashatest.v1;
+package com.mvasylchuk.yashatest.v2;
 
 import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.WebDriverRunner;
 import org.junit.Test;
 
-import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static junit.framework.Assert.assertEquals;
@@ -23,43 +20,40 @@ import static junit.framework.Assert.assertEquals;
 //        6 check that selenium official page is loaded
 //        Search the world's information, including webpages, images, videos and more. Google has many special features to help you find exactly what you're looking for.
 
-public class GoogleSearch {
+public class GoogleSearchTest {
 
 
     @Test
-    public void testGoogleSearchAndSeleniumPage(){
+    public void testGoogleSearch(){
         open("http://google.com/ncr");
 
-        $("#lst-ib").val("selenium").pressEnter();
         googleSearch("selenium");
-        searchResultsList.shouldHaveSize(10);
+        results.shouldHaveSize(10);
         assertFirstResultLinkText("Selenium - Web Browser Automation");
-        clickOnLinkFromResultsListByNumber(1);
+        clickNthResult(1);
 
         assertTextOnPage("Browser Automation");
         assertPageTitle("Selenium - Web Browser Automation");
 
     }
 
-        public void googleSearch(String text){
-        $("#lst-ib").val(text).pressEnter();
+    public void googleSearch(String text){
+        $("[name='q']").val(text).pressEnter();
+    }
+    public void clickNthResult(int number){
+        results.get(number - 1).find("a").click();
     }
 
     public void assertFirstResultLinkText(String text){
-        searchResultsList.get(0).shouldHave(text(text));
+        results.get(0).shouldHave(text(text));
     }
-
-    public void clickOnLinkFromResultsListByNumber(int number){
-        searchResultsList.get(number-1).find("a").click();
-    }
-
     public void assertTextOnPage(String text){
         $(".homepage").shouldHave(text(text));
     }
     public void assertPageTitle(String title){
-        assertEquals(title, getWebDriver().getTitle());
+        assertEquals(title, title());
     }
 
-    ElementsCollection searchResultsList = $$("#rso>.srg>.g");
+    ElementsCollection results = $$(".g");
 
 }

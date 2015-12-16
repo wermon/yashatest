@@ -1,4 +1,4 @@
-package com.mvasylchuk.yashatest;
+package com.mvasylchuk.yashatest.v0;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
