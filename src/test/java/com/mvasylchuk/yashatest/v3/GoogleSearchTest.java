@@ -1,11 +1,11 @@
-package com.mvasylchuk.yashatest.v2;
+package com.mvasylchuk.yashatest.v3;
 
 import com.codeborne.selenide.ElementsCollection;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -27,9 +27,9 @@ public class GoogleSearchTest {
     public void testGoogleSearch(){
         open("http://google.com/ncr");
 
-        googleSearch("selenium");
+        search("selenium");
         results.shouldHaveSize(10);
-        assertFirstResultLinkText("Selenium - Web Browser Automation");
+        assertNthLink(1,"Selenium - Web Browser Automation");
         clickNthResult(1);
 
         assertTextOnPage("Browser Automation");
@@ -37,15 +37,15 @@ public class GoogleSearchTest {
 
     }
 
-    public void googleSearch(String text){
-        $("[name='q']").val(text).pressEnter();
+    public void search(String text){
+        $(By.name("q")).val(text);
     }
     public void clickNthResult(int number){
         results.get(number - 1).find("a").click();
     }
 
-    public void assertFirstResultLinkText(String text){
-        results.get(0).shouldHave(text(text));
+    public void assertNthLink(int number, String text){
+        results.get(number - 1).shouldHave(text(text));
     }
     public void assertTextOnPage(String text){
         $(".homepage").shouldHave(text(text));
@@ -54,6 +54,6 @@ public class GoogleSearchTest {
         assertEquals(title, title());
     }
 
-    ElementsCollection results = $$(".srg>.g");
+    ElementsCollection results = $$(".srg>.g .r");
 
 }
